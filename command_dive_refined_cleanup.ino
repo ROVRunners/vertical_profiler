@@ -35,7 +35,7 @@ const int expin = 12;
 const int conpin = 11;
 
 //Array and Loop Variables
-float data[120][2];       // creates array with 120 spaces for data 
+float data[120][3];       // creates array with 120 spaces for data 
 int count = 0;            // sets count for array pointer
 int down = 3;             // time period to contract actuator
 int up = 6;               // time period to expand actuator
@@ -424,17 +424,21 @@ void loop(void)
       for (int i = 0; i <= count; i++) // sets up for loop to move through all logged points of data
       {  
         // Send the data to the BTLE module to be sent via BTLE Serial 
-        float x = data[i][1];       //Depth data   
+        float depth = data[i][0];
+        float pressure = data[i][1];       //Depth data   
         
-        float y = data[i][2]/1000;  //Division by 1000 converts milliseconds to seconds.
+        float time = data[i][2]/1000;  //Division by 1000 converts milliseconds to seconds.
       
-        btle.print("EX11:  ");
+        btle.print("EX11   ");
       
-        btle.print(x);
+        btle.print(time);
+        btle.print(" seconds   ");
+
+        btle.print(pressure / 10.0);
+        btle.print(" kpa   ");
         
-        btle.print(" , ");
-        
-        btle.print(y);
+        btle.print(depth);
+        btle.print(" meters");
         
         //Serial.print is for debugging. Comment out or delete during application
         /*Serial.print("Data: ");
